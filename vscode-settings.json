@@ -1,0 +1,11 @@
+{
+  "security.workspace.trust.enabled": false,
+  "window.menuBarVisibility": "classic",
+  "workbench.colorTheme": "Default Dark Modern",
+  "workbench.startupEditor": "none",
+  "editor.inlayHints.enabled": "off",
+  "editor.formatOnSave": true,
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  }
+}
