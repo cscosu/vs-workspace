@@ -38,6 +38,9 @@ RUN sudo chown coder:coder /home/coder/.local/share/code-server/User/settings.js
 
 RUN mkdir workspace
 
+COPY config.yaml /home/coder/.config/code-server/config.yaml
+RUN sudo chown coder:coder /home/coder/.config/code-server/config.yaml
+
 COPY entrypoint.sh /entrypoint.sh
 RUN sudo chown coder:coder /entrypoint.sh
 RUN chmod +x /entrypoint.sh
