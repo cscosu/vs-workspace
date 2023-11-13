@@ -16,6 +16,9 @@ RUN code-server --install-extension ms-python.black-formatter
 RUN code-server --install-extension llvm-vs-code-extensions.vscode-clangd
 RUN code-server --install-extension rust-lang.rust-analyzer
 RUN code-server --install-extension ms-vscode.hexeditor
+RUN code-server --install-extension vadimcn.vscode-lldb
+RUN code-server --install-extension rangav.vscode-thunder-client
+RUN code-server --install-extension mechatroner.rainbow-csv
 
 RUN pip install pwntools pyshark
 
