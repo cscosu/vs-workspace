@@ -22,11 +22,12 @@ Then navigate to http://localhost:8080.
 - Rust
   - [rust-analyzer](https://github.com/rust-lang/rust-analyzer)
 - C/C++
-  - [gef](https://github.com/hugsy/gef) gdb usability plugin
+  - [gef](https://github.com/hugsy/gef) gdb plugin
   - [clangd](https://clangd.llvm.org) language server
 - JavaScript
   - [fnm](https://github.com/Schniz/fnm) node version manager
   - [bun](https://github.com/oven-sh/bun) javascript/typescript runtime
+- \+ more
 
 ## HTTP Proxying
 

@@ -19,6 +19,7 @@ RUN code-server --install-extension ms-vscode.hexeditor
 RUN code-server --install-extension vadimcn.vscode-lldb
 RUN code-server --install-extension rangav.vscode-thunder-client
 RUN code-server --install-extension mechatroner.rainbow-csv
+RUN code-server --install-extension sndst00m.vscode-native-svg-preview
 
 RUN pip install pwntools pyshark
 
@@ -43,6 +44,8 @@ RUN mkdir workspace
 
 COPY config.yaml /home/coder/.config/code-server/config.yaml
 RUN sudo chown coder:coder /home/coder/.config/code-server/config.yaml
+
+COPY media /usr/lib/code-server/src/browser/media
 
 COPY entrypoint.sh /entrypoint.sh
 RUN sudo chown coder:coder /entrypoint.sh
