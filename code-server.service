@@ -1,0 +1,12 @@
+[Unit]
+Description=VSCode Server
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/entrypoint.sh --bind-addr 0.0.0.0:8080 /home/coder/workspace
+WorkingDirectory=/home/coder/workspace
+Restart=always
+User=coder
+
+[Install]
+WantedBy=default.target

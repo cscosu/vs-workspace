@@ -8,6 +8,43 @@ RUN sudo apt-get install -y unzip file wget python3 python3-pip python3-dev pyth
     gdb-multiarch libc6:i386 libncurses5:i386 libstdc++6:i386 libssl-dev libffi-dev \
     libpcre3-dev libdb-dev libxt-dev libxaw7-dev liblzma-dev
 
+USER root
+RUN apt-get install -y --no-install-recommends   \
+    systemd                              \
+    systemd-sysv                         \
+    libsystemd0                          \
+    ca-certificates                      \
+    dbus                                 \
+    iptables                             \
+    iproute2                             \
+    kmod                                 \
+    locales                              \
+    sudo                                 \
+    udev &&                              \
+    \
+    # Prevents journald from reading kernel messages from /dev/kmsg
+    echo "ReadKMsg=no" >> /etc/systemd/journald.conf &&               \
+    \
+    # Housekeeping
+    apt-get clean -y &&                                               \
+    rm -rf                                                            \
+    /var/cache/debconf/*                                           \
+    /var/lib/apt/lists/*                                           \
+    /var/log/*                                                     \
+    /tmp/*                                                         \
+    /var/tmp/*                                                     \
+    /usr/share/doc/*                                               \
+    /usr/share/man/*                                               \
+    /usr/share/local/*
+
+RUN systemctl mask systemd-udevd.service \
+    systemd-udevd-kernel.socket \
+    systemd-udevd-control.socket \
+    systemd-modules-load.service \
+    sys-kernel-debug.mount \
+    sys-kernel-tracing.mount
+USER coder
+
 RUN sudo usermod -aG docker coder
 
 RUN code-server --install-extension ms-azuretools.vscode-docker
@@ -48,4 +85,11 @@ COPY media /usr/lib/code-server/src/browser/media
 COPY entrypoint.sh /entrypoint.sh
 RUN sudo chown coder:coder /entrypoint.sh
 RUN chmod +x /entrypoint.sh
-ENTRYPOINT [ "/entrypoint.sh" ]
+
+COPY code-server.service /etc/systemd/system/code-server.service
+
+# Make use of stopsignal (instead of sigterm) to stop systemd containers.
+STOPSIGNAL SIGRTMIN+3
+
+# Set systemd as entrypoint.
+ENTRYPOINT [ "/sbin/init", "--log-level=err" ]
