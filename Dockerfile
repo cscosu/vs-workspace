@@ -4,7 +4,8 @@ USER root
 
 RUN dpkg --add-architecture i386 && apt-get update && apt-get upgrade -y
 
-RUN apt-get install -y --no-install-recommends   \
+RUN apt-get update && apt-get upgrade &&        \
+    apt-get install -y --no-install-recommends   \
     systemd                              \
     systemd-sysv                         \
     libsystemd0                          \
@@ -18,19 +19,7 @@ RUN apt-get install -y --no-install-recommends   \
     udev &&                              \
     \
     # Prevents journald from reading kernel messages from /dev/kmsg
-    echo "ReadKMsg=no" >> /etc/systemd/journald.conf &&               \
-    \
-    # Housekeeping
-    apt-get clean -y &&                                               \
-    rm -rf                                                            \
-    /var/cache/debconf/*                                           \
-    /var/lib/apt/lists/*                                           \
-    /var/log/*                                                     \
-    /tmp/*                                                         \
-    /var/tmp/*                                                     \
-    /usr/share/doc/*                                               \
-    /usr/share/man/*                                               \
-    /usr/share/local/*
+    echo "ReadKMsg=no" >> /etc/systemd/journald.conf
 
 RUN systemctl mask systemd-udevd.service \
     systemd-udevd-kernel.socket \
