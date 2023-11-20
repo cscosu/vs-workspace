@@ -25,14 +25,19 @@ RUN systemctl mask systemd-udevd.service \
     systemd-udevd-kernel.socket \
     systemd-udevd-control.socket \
     systemd-modules-load.service \
+    systemd-udev-trigger.service \
+    systemd-journald-audit.socket \
+    sys-kernel-config.mount \
     sys-kernel-debug.mount \
     sys-kernel-tracing.mount
 
 RUN echo "wireshark-common wireshark-common/install-setuid boolean true" | debconf-set-selections
-RUN apt-get install -y unzip file wget python3 python3-pip python3-dev python3-venv clangd tshark docker.io \
+RUN apt-get install -y unzip file wget python3 python3-pip python3-dev python3-venv clangd tshark \
     gcc-multilib make build-essential pkg-config patchelf elfutils gdb gdb-multiarch \
     gdb-multiarch libc6:i386 libncurses5:i386 libstdc++6:i386 libssl-dev libffi-dev \
     libpcre3-dev libdb-dev libxt-dev libxaw7-dev liblzma-dev
+
+RUN curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
 
 RUN usermod -aG docker coder
 
@@ -77,9 +82,11 @@ COPY entrypoint.sh /entrypoint.sh
 RUN sudo chown coder:coder /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-COPY code-server.service /etc/systemd/system/code-server.service
 
 USER root
+
+COPY code-server.service /etc/systemd/system/code-server.service
+RUN systemctl enable code-server.service
 
 # Make use of stopsignal (instead of sigterm) to stop systemd containers.
 STOPSIGNAL SIGRTMIN+3

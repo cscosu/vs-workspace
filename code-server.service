@@ -3,8 +3,8 @@ Description=VSCode Server
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/entrypoint.sh --bind-addr 0.0.0.0:8080 /home/coder/workspace
-WorkingDirectory=/home/coder/workspace
+ExecStart=/usr/bin/dumb-init /usr/bin/code-server --bind-addr 0.0.0.0:8080 /home/coder/workspace
+WorkingDirectory=/home/coder
 Restart=always
 User=coder
 
