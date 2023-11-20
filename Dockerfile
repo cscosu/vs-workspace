@@ -1,14 +1,9 @@
 FROM codercom/code-server
 
-RUN sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get upgrade -y
-
-RUN echo "wireshark-common wireshark-common/install-setuid boolean true" | sudo debconf-set-selections
-RUN sudo apt-get install -y unzip file wget python3 python3-pip python3-dev python3-venv clangd tshark docker.io \
-    gcc-multilib make build-essential pkg-config patchelf elfutils gdb gdb-multiarch \
-    gdb-multiarch libc6:i386 libncurses5:i386 libstdc++6:i386 libssl-dev libffi-dev \
-    libpcre3-dev libdb-dev libxt-dev libxaw7-dev liblzma-dev
-
 USER root
+
+RUN dpkg --add-architecture i386 && apt-get update && apt-get upgrade -y
+
 RUN apt-get install -y --no-install-recommends   \
     systemd                              \
     systemd-sysv                         \
@@ -43,9 +38,16 @@ RUN systemctl mask systemd-udevd.service \
     systemd-modules-load.service \
     sys-kernel-debug.mount \
     sys-kernel-tracing.mount
-USER coder
 
-RUN sudo usermod -aG docker coder
+RUN echo "wireshark-common wireshark-common/install-setuid boolean true" | debconf-set-selections
+RUN apt-get install -y unzip file wget python3 python3-pip python3-dev python3-venv clangd tshark docker.io \
+    gcc-multilib make build-essential pkg-config patchelf elfutils gdb gdb-multiarch \
+    gdb-multiarch libc6:i386 libncurses5:i386 libstdc++6:i386 libssl-dev libffi-dev \
+    libpcre3-dev libdb-dev libxt-dev libxaw7-dev liblzma-dev
+
+RUN usermod -aG docker coder
+
+USER coder
 
 RUN code-server --install-extension ms-azuretools.vscode-docker
 RUN code-server --install-extension ms-python.python
@@ -87,6 +89,8 @@ RUN sudo chown coder:coder /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 COPY code-server.service /etc/systemd/system/code-server.service
+
+USER root
 
 # Make use of stopsignal (instead of sigterm) to stop systemd containers.
 STOPSIGNAL SIGRTMIN+3
