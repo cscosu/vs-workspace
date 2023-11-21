@@ -78,11 +78,6 @@ RUN sudo chown coder:coder /home/coder/.config/code-server/config.yaml
 
 COPY media /usr/lib/code-server/src/browser/media
 
-COPY entrypoint.sh /entrypoint.sh
-RUN sudo chown coder:coder /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
-
 USER root
 
 COPY code-server.service /etc/systemd/system/code-server.service

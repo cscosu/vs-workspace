@@ -1,13 +1,13 @@
 ![vscode screenshot in browser](docs/vscode.png)
 
-Custom VSCode server running in docker for quick linux environments. Based on Debian 11.
+Custom VSCode server running in docker for quick linux environments. Based on Debian 11 and designed for CTFs.
 
 ## Running
 
-Privileged mode is required for the container to run docker-in-docker.
+This image requires the [sysbox](https://github.com/nestybox/sysbox) runtime.
 
 ```
-docker run --rm --privileged -d -p 8080:8080 ghcr.io/cscosu/vs-workspace
+docker run --rm --runtime=sysbox-runc -d -p 8080:8080 ghcr.io/cscosu/vs-workspace
 ```
 
 Then navigate to http://localhost:8080.
@@ -19,8 +19,6 @@ Then navigate to http://localhost:8080.
   - [pwntools](https://github.com/Gallopsled/pwntools) pwn ctf framework
   - [pyshark](https://github.com/KimiNewt/pyshark) wireshark wrapper
   - [black](https://github.com/psf/black) formatter
-- Rust
-  - [rust-analyzer](https://github.com/rust-lang/rust-analyzer)
 - C/C++
   - [gef](https://github.com/hugsy/gef) gdb plugin
   - [clangd](https://clangd.llvm.org) language server
