@@ -73,16 +73,12 @@ RUN sudo chown coder:coder /home/coder/.local/share/code-server/User/settings.js
 
 RUN mkdir workspace
 
-# COPY config.yaml /home/coder/.config/code-server/config.yaml
-# RUN sudo chown coder:coder /home/coder/.config/code-server/config.yaml
-
 COPY media /usr/lib/code-server/src/browser/media
 
 USER root
 
-RUN sed -i -e 's/{{I18N_LOGIN_TITLE}}/OSU Cyber Workspace Login/g' /usr/lib/code-server/src/browser/pages/login.html
-RUN sed -i -e 's/{{WELCOME_TEXT}}/Welcome to your Linux Workspace/g' /usr/lib/code-server/src/browser/pages/login.html
-RUN sed -i -e 's/{{PASSWORD_MSG}}/Your password should be given by the Discord bot./g' /usr/lib/code-server/src/browser/pages/login.html
+COPY login.html /usr/lib/code-server/src/browser/pages/login.html
+RUN sed -i -e 's/<\/html>/<script>const params = new URLSearchParams(window.location.search);params.delete("password");window.history.replaceState(null, "", window.location.pathname + "?" + decodeURIComponent(params));<\/script><\/html>/g' /usr/lib/code-server/lib/vscode/out/vs/code/browser/workbench/workbench.html
 
 COPY code-server.service /etc/systemd/system/code-server.service
 RUN systemctl enable code-server.service
