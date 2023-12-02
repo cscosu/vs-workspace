@@ -57,10 +57,11 @@
                 type="password"
                 placeholder="PASSWORD"
                 name="password"
-                autocomplete="current-password"
+                autocomplete="off"
               />
               <input class="submit -button" value="SUBMIT" type="submit" />
             </div>
+            {{ERROR}}
           </form>
         </div>
       </div>
@@ -77,12 +78,6 @@
       const password = params.get("password");
       if (password) {
         document.querySelector(".password").value = password;
-        params.delete("password");
-        window.history.replaceState(
-          null,
-          "",
-          window.location.pathname + "?" + decodeURIComponent(params)
-        );
         document.querySelector(".login-form").submit();
       }
     </script>
