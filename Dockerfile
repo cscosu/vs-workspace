@@ -35,7 +35,7 @@ RUN echo "wireshark-common wireshark-common/install-setuid boolean true" | debco
 RUN apt-get install -y unzip file wget vim python3 python3-pip python3-dev python3-venv clangd tshark \
     gcc-multilib make build-essential pkg-config patchelf elfutils gdb gdb-multiarch \
     gdb-multiarch libc6:i386 libncurses5:i386 libstdc++6:i386 libssl-dev libffi-dev \
-    libpcre3-dev libdb-dev libxt-dev libxaw7-dev liblzma-dev
+    libpcre3-dev libdb-dev libxt-dev libxaw7-dev liblzma-dev netcat
 
 RUN curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
 
