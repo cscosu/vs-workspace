@@ -35,7 +35,7 @@ RUN echo "wireshark-common wireshark-common/install-setuid boolean true" | debco
 RUN apt-get install -y unzip file wget vim python3 python3-pip python3-dev python3-venv clangd tshark \
     gcc-multilib make build-essential pkg-config patchelf elfutils gdb gdb-multiarch \
     gdb-multiarch libc6:i386 libncurses5:i386 libstdc++6:i386 libssl-dev libffi-dev \
-    libpcre3-dev libdb-dev libxt-dev libxaw7-dev liblzma-dev netcat-openbsd
+    libpcre3-dev libdb-dev libxt-dev libxaw7-dev liblzma-dev netcat-openbsd python3-pwntools
 
 RUN curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
 
@@ -52,7 +52,7 @@ RUN code-server --install-extension rangav.vscode-thunder-client
 RUN code-server --install-extension mechatroner.rainbow-csv
 RUN code-server --install-extension sndst00m.vscode-native-svg-preview
 
-RUN pip install pwntools pyshark
+RUN pip install --break-system-packages pyshark
 
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
 ENV PATH="/home/coder/.cargo/bin:${PATH}"
